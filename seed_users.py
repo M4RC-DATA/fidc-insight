@@ -110,6 +110,21 @@ def _semear() -> None:
         print(f"  {cfg['username']:<10} · {cfg['senha']}")
 
 
+def seed(silencioso: bool = False) -> None:
+    """Cria os usuários padrão se ainda não existirem.
+
+    Chamado automaticamente pelo app.py na inicialização.
+    Não cria duplicatas — seguro para chamar múltiplas vezes.
+
+    Args:
+        silencioso: se True, suprime toda a saída de texto.
+    """
+    import io, contextlib
+    ctx = contextlib.redirect_stdout(io.StringIO()) if silencioso else contextlib.nullcontext()
+    with ctx:
+        _semear()
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Seed de usuários do FIDC Insight")
     parser.add_argument("--reset", action="store_true", help="Apaga o auth.db antes de semear.")

@@ -14,6 +14,17 @@ from ui.views import (
 
 logger = get_logger(__name__)
 
+# Garante que os usuários padrão existem (necessário no Streamlit Cloud
+# onde o auth.db não é persistido entre deploys)
+def _garantir_usuarios():
+    try:
+        from seed_users import seed
+        seed(silencioso=True)
+    except Exception:
+        pass
+
+_garantir_usuarios()
+
 st.set_page_config(
     page_title=f"{APP_TITLE} | Data Verse",
     page_icon=APP_ICON,
