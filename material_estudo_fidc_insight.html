@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FIDC Insight · Material de Estudo Completo</title>
+<style>
+  :root {
+    --navy: #0B1F3A;
+    --navy-mid: #1A3560;
+    --navy-light: #2C4E82;
+    --gold: #C4972A;
+    --gold-light: #E8C46A;
+    --text: #1A1A2E;
+    --text-muted: #4A5568;
+    --text-light: #718096;
+    --bg: #FAFAF8;
+    --bg-card: #FFFFFF;
+    --bg-alt: #F4F5F7;
+    --border: #E2E5EA;
+    --green: #16A34A;
+    --amber: #CA8A04;
+    --red: #DC2626;
+    --blue: #1D4ED8;
+    --radius: 8px;
+    --shadow: 0 1px 4px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Georgia', serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+    font-size: 16px;
+  }
+
+  /* ── CAPA ─────────────────────────────────────────────── */
+  .cover {
+    background: linear-gradient(155deg, var(--navy) 0%, var(--navy-mid) 60%, var(--navy-light) 100%);
+    color: #fff;
+    padding: 80px 60px 64px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 480px; height: 480px;
+    border: 80px solid rgba(196,151,42,0.12);
+    border-radius: 50%;
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    bottom: -120px; left: -60px;
+    width: 360px; height: 360px;
+    border: 60px solid rgba(255,255,255,0.05);
+    border-radius: 50%;
+  }
+  .cover-badge {
+    display: inline-block;
+    background: rgba(196,151,42,0.25);
+    border: 1px solid rgba(196,151,42,0.5);
+    color: var(--gold-light);
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 4px;
+    margin-bottom: 28px;
+  }
+  .cover h1 {
+    font-family: Georgia, serif;
+    font-size: 44px;
+    font-weight: normal;
+    line-height: 1.2;
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .cover h1 span { color: var(--gold-light); }
+  .cover-sub {
+    font-size: 18px;
+    color: rgba(255,255,255,0.72);
+    max-width: 560px;
+    margin-bottom: 48px;
+    line-height: 1.6;
+  }
+  .cover-meta {
+    display: flex; gap: 40px; flex-wrap: wrap;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    padding-top: 28px;
+  }
+  .cover-meta-item { font-size: 13px; color: rgba(255,255,255,0.6); }
+  .cover-meta-item strong { display: block; color: #fff; font-size: 15px; margin-bottom: 2px; }
+
+  /* ── LAYOUT ────────────────────────────────────────────── */
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 32px 80px;
+  }
+
+  /* ── SUMÁRIO ───────────────────────────────────────────── */
+  .toc {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--navy);
+    border-radius: var(--radius);
+    padding: 36px 40px;
+    margin: 48px 0 56px;
+    box-shadow: var(--shadow);
+  }
+  .toc h2 {
+    font-family: Georgia, serif;
+    font-size: 20px;
+    font-weight: normal;
+    color: var(--navy);
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .toc ol { counter-reset: toc; list-style: none; }
+  .toc > ol > li { counter-increment: toc; margin-bottom: 6px; }
+  .toc > ol > li::before {
+    content: counter(toc) ". ";
+    color: var(--gold);
+    font-weight: bold;
+    margin-right: 4px;
+  }
+  .toc a { color: var(--navy-mid); text-decoration: none; font-size: 15px; }
+  .toc a:hover { color: var(--gold); text-decoration: underline; }
+  .toc .sub { margin-left: 28px; margin-top: 4px; list-style: none; }
+  .toc .sub li::before { content: "—  "; color: var(--border); }
+  .toc .sub a { font-size: 13.5px; color: var(--text-muted); }
+
+  /* ── SEÇÕES ────────────────────────────────────────────── */
+  .chapter {
+    margin-top: 72px;
+    padding-top: 32px;
+    border-top: 2px solid var(--navy);
+  }
+  .chapter-number {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .chapter h2 {
+    font-family: Georgia, serif;
+    font-size: 30px;
+    font-weight: normal;
+    color: var(--navy);
+    line-height: 1.3;
+    margin-bottom: 20px;
+  }
+  .chapter-intro {
+    font-size: 17px;
+    color: var(--text-muted);
+    line-height: 1.8;
+    margin-bottom: 36px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--border);
+  }
+  h3 {
+    font-family: Georgia, serif;
+    font-size: 20px;
+    font-weight: normal;
+    color: var(--navy-mid);
+    margin: 40px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--bg-alt);
+  }
+  h4 {
+    font-size: 15px;
+    font-family: 'Arial', sans-serif;
+    font-weight: 700;
+    color: var(--text);
+    margin: 28px 0 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  p { margin-bottom: 16px; }
+
+  /* ── CALLOUTS ──────────────────────────────────────────── */
+  .callout {
+    border-radius: var(--radius);
+    padding: 18px 22px;
+    margin: 24px 0;
+    font-size: 15px;
+    line-height: 1.65;
+  }
+  .callout-navy {
+    background: var(--navy);
+    color: rgba(255,255,255,0.9);
+    border-left: none;
+  }
+  .callout-navy strong { color: var(--gold-light); }
+  .callout-gold {
+    background: #FEF9EC;
+    border-left: 4px solid var(--gold);
+    color: var(--text);
+  }
+  .callout-green {
+    background: #F0FDF4;
+    border-left: 4px solid var(--green);
+  }
+  .callout-red {
+    background: #FEF2F2;
+    border-left: 4px solid var(--red);
+  }
+  .callout-blue {
+    background: #EFF6FF;
+    border-left: 4px solid var(--blue);
+  }
+  .callout-label {
+    font-family: 'Arial', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    opacity: 0.6;
+  }
+
+  /* ── FÓRMULAS ──────────────────────────────────────────── */
+  .formula {
+    background: var(--navy);
+    color: #E8F0FE;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin: 20px 0;
+    line-height: 2;
+    overflow-x: auto;
+  }
+  .formula .comment { color: rgba(196,151,42,0.8); font-style: italic; }
+  .formula .highlight { color: var(--gold-light); font-weight: bold; }
+
+  /* ── TABELAS ───────────────────────────────────────────── */
+  .table-wrap { overflow-x: auto; margin: 24px 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    font-family: 'Arial', sans-serif;
+    box-shadow: var(--shadow);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  thead { background: var(--navy); color: #fff; }
+  thead th {
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+  tbody tr:nth-child(even) { background: var(--bg-alt); }
+  tbody tr:hover { background: #EEF2FF; }
+  td { padding: 11px 16px; border-bottom: 1px solid var(--border); }
+  td:first-child { font-weight: 600; }
+
+  /* ── CARDS ─────────────────────────────────────────────── */
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+  .card-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow);
+  }
+  .card-label {
+    font-family: 'Arial', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 8px;
+  }
+  .card h4 { font-size: 16px; margin: 0 0 8px; text-transform: none; letter-spacing: 0; color: var(--navy); }
+  .card p { font-size: 14px; color: var(--text-muted); margin: 0; }
+  .card-accent { border-top: 3px solid var(--gold); }
+  .card-navy { background: var(--navy); color: #fff; }
+  .card-navy .card-label { color: rgba(255,255,255,0.5); }
+  .card-navy h4 { color: var(--gold-light); }
+  .card-navy p { color: rgba(255,255,255,0.75); }
+
+  /* ── TIMELINE ──────────────────────────────────────────── */
+  .timeline { margin: 28px 0; border-left: 2px solid var(--border); padding-left: 28px; }
+  .timeline-item { position: relative; margin-bottom: 28px; }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -36px; top: 4px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--navy);
+    border: 3px solid var(--bg);
+    box-shadow: 0 0 0 2px var(--navy);
+  }
+  .timeline-item h5 {
+    font-family: 'Arial', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+  .timeline-item p { font-size: 14px; color: var(--text-muted); margin: 0; }
+
+  /* ── PILL ───────────────────────────────────────────────── */
+  .pill {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-family: 'Arial', sans-serif;
+    font-weight: 700;
+    margin: 0 2px;
+  }
+  .pill-green { background: #DCFCE7; color: #166534; }
+  .pill-amber { background: #FEF9C3; color: #854D0E; }
+  .pill-red   { background: #FEE2E2; color: #991B1B; }
+  .pill-navy  { background: #DBEAFE; color: #1E3A8A; }
+
+  /* ── FOOTNOTE ───────────────────────────────────────────── */
+  .footnote {
+    font-size: 13px;
+    color: var(--text-light);
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+    margin-top: 48px;
+  }
+
+  /* ── PRINT ──────────────────────────────────────────────── */
+  @media print {
+    body { font-size: 14px; }
+    .cover { padding: 48px 40px; }
+    .cover h1 { font-size: 32px; }
+    .chapter { break-before: page; }
+    .callout, .formula, .card { break-inside: avoid; }
+  }
+
+  @media (max-width: 640px) {
+    .cover { padding: 40px 24px; }
+    .cover h1 { font-size: 28px; }
+    .container { padding: 0 16px 60px; }
+    .card-grid { grid-template-columns: 1fr; }
+    .card-grid-3 { grid-template-columns: 1fr; }
+    .cover-meta { gap: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- CAPA -->
+<div class="cover">
+  <div class="cover-badge">Material de Estudo · Projeto Final de Graduação · 2026</div>
+  <h1>FIDC <span>Insight</span><br>Plataforma de Gestão de Risco</h1>
+  <p class="cover-sub">
+    Guia técnico completo: do que é um FIDC até cada linha de código.
+    Metodologia financeira, decisões de arquitetura e justificativas
+    para cada escolha — escrito para quem está aprendendo.
+  </p>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><strong>Autor</strong>Christian Nielsen</div>
+    <div class="cover-meta-item"><strong>Parceiro</strong>Núclea Dataverse</div>
+    <div class="cover-meta-item"><strong>Stack</strong>Python · Streamlit · BigQuery · Airflow</div>
+    <div class="cover-meta-item"><strong>Versão</strong>1.0 · Abril 2026</div>
+  </div>
+</div>
+
+<!-- CONTAINER -->
+<div class="container">
+
+<!-- SUMÁRIO -->
+<nav class="toc">
+  <h2>Sumário</h2>
+  <ol>
+    <li><a href="#ch1">O que é um FIDC? O problema que resolvemos</a>
+      <ul class="sub">
+        <li><a href="#ch1-1">Como o dinheiro flui dentro de um FIDC</a></li>
+        <li><a href="#ch1-2">Por que gestores precisam de tecnologia</a></li>
+      </ul>
+    </li>
+    <li><a href="#ch2">Motor de Score: como avaliamos um sacado</a>
+      <ul class="sub">
+        <li><a href="#ch2-1">As quatro dimensões do score</a></li>
+        <li><a href="#ch2-2">Fator regional e sua justificativa</a></li>
+        <li><a href="#ch2-3">Problema da normalização: a decisão que tomamos</a></li>
+      </ul>
+    </li>
+    <li><a href="#ch3">Sistema de Rating: de score a decisão</a></li>
+    <li><a href="#ch4">Precificação RAROC: quanto cobrar pelo risco</a>
+      <ul class="sub">
+        <li><a href="#ch4-1">O que é Valor Presente e por que importa</a></li>
+        <li><a href="#ch4-2">O que é RAROC e por que usamos</a></li>
+        <li><a href="#ch4-3">A fórmula completa passo a passo</a></li>
+      </ul>
+    </li>
+    <li><a href="#ch5">Perda Esperada (ECL) e o padrão IFRS 9</a>
+      <ul class="sub">
+        <li><a href="#ch5-1">LGD: por que 50%?</a></li>
+        <li><a href="#ch5-2">PD: probabilidade de calote por rating</a></li>
+      </ul>
+    </li>
+    <li><a href="#ch6">Compliance Regulatório (CVM)</a>
+      <ul class="sub">
+        <li><a href="#ch6-1">Limites de concentração</a></li>
+        <li><a href="#ch6-2">HHI: o índice de concentração geográfica</a></li>
+      </ul>
+    </li>
+    <li><a href="#ch7">Early Warning System (EWS)</a></li>
+    <li><a href="#ch8">Verificação de Lastro: detectando boletos frios</a></li>
+    <li><a href="#ch9">Arquitetura do Sistema</a>
+      <ul class="sub">
+        <li><a href="#ch9-1">Por que Clean Architecture?</a></li>
+        <li><a href="#ch9-2">Por que Streamlit?</a></li>
+        <li><a href="#ch9-3">Por que BigQuery?</a></li>
+        <li><a href="#ch9-4">Pipeline ETL com Airflow</a></li>
+      </ul>
+    </li>
+    <li><a href="#ch10">Segurança: o que protegemos e como</a></li>
+    <li><a href="#ch11">As páginas do sistema explicadas</a></li>
+    <li><a href="#ch12">Glossário completo</a></li>
+    <li><a href="#ch13">Referências bibliográficas</a></li>
+  </ol>
+</nav>
+
+
+<!-- CAPÍTULO 1 -->
+<section class="chapter" id="ch1">
+  <div class="chapter-number">Capítulo 01</div>
+  <h2>O que é um FIDC?<br>O problema que resolvemos</h2>
+  <p class="chapter-intro">
+    Antes de entender o sistema, precisamos entender o negócio. Um FIDC é um tipo de fundo de
+    investimento que compra dívidas de empresas com desconto. Parece simples, mas esconde um
+    problema enorme: como saber o preço justo dessa dívida e se ela vai ser paga?
+  </p>
+
+  <h3 id="ch1-1">Como o dinheiro flui dentro de um FIDC</h3>
+
+  <p>Imagine que uma empresa (chamada de <strong>cedente</strong>) vendeu R$&nbsp;100 de mercadoria
+  a prazo para um cliente (chamado de <strong>sacado</strong>). Ela tem um boleto de R$&nbsp;100 para
+  receber daqui a 90 dias, mas precisa de dinheiro agora.</p>
+
+  <p>O FIDC entra como comprador desse boleto. Ele paga, digamos, R$&nbsp;88 hoje e vai receber
+  R$&nbsp;100 em 90 dias. O fundo lucrou R$&nbsp;12 — que é a taxa de desconto cobrada pelo risco
+  de o sacado não pagar.</p>
+
+  <div class="callout callout-navy">
+    <div class="callout-label">Conceito-chave</div>
+    <strong>Os três personagens de um FIDC:</strong><br><br>
+    • <strong>Cedente</strong> — a empresa que vendeu e tem o direito de receber. Ela vende esse direito ao fundo com desconto para obter caixa imediato.<br>
+    • <strong>Sacado</strong> — o cliente devedor que vai pagar a dívida no vencimento. É o risco real do fundo.<br>
+    • <strong>Fundo (FIDC)</strong> — compra o direito de receber, lucrando na diferença entre o que pagou e o que vai receber.
+  </div>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <h5>1. Empresa vende produto a prazo</h5>
+      <p>Cedente entrega mercadoria. Sacado assina boleto de R$&nbsp;100 para 90 dias.</p>
+    </div>
+    <div class="timeline-item">
+      <h5>2. Cedente precisa de caixa agora</h5>
+      <p>Em vez de esperar 90 dias, a empresa "vende" esse boleto ao FIDC.</p>
+    </div>
+    <div class="timeline-item">
+      <h5>3. FIDC faz a análise de crédito</h5>
+      <p><em>Aqui entra o nosso sistema.</em> O fundo avalia: o sacado tem histórico de pagar? Qual é o risco de calote? Quanto cobrar pelo desconto?</p>
+    </div>
+    <div class="timeline-item">
+      <h5>4. FIDC paga R$&nbsp;88 e recebe o boleto</h5>
+      <p>A taxa de 12% em 90 dias remunera o fundo pelo risco assumido.</p>
+    </div>
+    <div class="timeline-item">
+      <h5>5. No vencimento, sacado paga R$&nbsp;100</h5>
+      <p>Se o sacado pagar, o fundo lucrou. Se não pagar, o fundo perde os R$&nbsp;88 investidos (ou parte deles).</p>
+    </div>
+  </div>
+
+  <h3 id="ch1-2">Por que gestores precisam de tecnologia</h3>
+
+  <p>Um FIDC típico pode ter centenas ou milhares de sacados diferentes, de setores variados, em
+  estados diferentes do Brasil. O gestor precisa responder três perguntas críticas antes de aprovar
+  cada operação:</p>
+
+  <div class="card-grid">
+    <div class="card card-accent">
+      <div class="card-label">Pergunta 1</div>
+      <h4>Este sacado vai pagar?</h4>
+      <p>Histórico de pagamentos, atrasos, inadimplência — o score de crédito responde isso.</p>
+    </div>
+    <div class="card card-accent">
+      <div class="card-label">Pergunta 2</div>
+      <h4>Qual o preço justo?</h4>
+      <p>Quanto cobrar de desconto para o lucro compensar o risco? O RAROC responde isso.</p>
+    </div>
+    <div class="card card-accent">
+      <div class="card-label">Pergunta 3</div>
+      <h4>Cabe no fundo?</h4>
+      <p>A regulação limita exposição por sacado e por estado. O compliance regulatório responde isso.</p>
+    </div>
+    <div class="card card-accent">
+      <div class="card-label">Problema sem tecnologia</div>
+      <h4>Impossível na mão</h4>
+      <p>Com 500 sacados e novos boletos chegando todo dia, um gestor humano não consegue calcular tudo isso em tempo real.</p>
+    </div>
+  </div>
+
+  <div class="callout callout-gold">
+    <div class="callout-label">Por que este projeto importa</div>
+    O FIDC Insight automatiza exatamente essas três perguntas. Conectado ao BigQuery da Núclea,
+    ele carrega a carteira real, calcula o score de cada sacado, verifica se a operação cabe nos
+    limites regulatórios e calcula o preço justo — tudo em segundos, com trilha de auditoria
+    completa e documentos assinados com hash SHA-256.
+  </div>
+</section>
+
+
+<!-- CAPÍTULO 2 -->
+<section class="chapter" id="ch2">
+  <div class="chapter-number">Capítulo 02</div>
+  <h2>Motor de Score:<br>como avaliamos um sacado</h2>
+  <p class="chapter-intro">
+    O score é o coração do sistema. É um número de 0 a 1.000 que resume o risco de crédito de um
+    sacado. Zero significa risco máximo; 1.000 significa risco mínimo. Entender como esse número
+    é calculado — e por que cada componente tem o peso que tem — é fundamental para justificar
+    qualquer análise gerada pelo sistema.
+  </p>
+
+  <h3 id="ch2-1">As quatro dimensões do score</h3>
+
+  <p>O score é calculado como uma <strong>média ponderada de quatro componentes</strong>, cada um
+  normalizado para a escala 0–1 antes de ser multiplicado pelo peso:</p>
+
+  <div class="formula">
+<span class="highlight">score_final</span> = (
+    v_qualidade        × <span class="highlight">0.35</span>    <span class="comment">← 35% · comportamento de pagamento</span>
+  + v_liquidez         × <span class="highlight">0.25</span>    <span class="comment">← 25% · capacidade de pagar no curto prazo</span>
+  + v_inadimplencia    × <span class="highlight">0.30</span>    <span class="comment">← 30% · histórico de atrasos e calotes</span>
+  + v_regional         × <span class="highlight">0.10</span>    <span class="comment">← 10% · ajuste pelo risco histórico da UF</span>
+) × 1000</div>
+
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Dimensão</th>
+        <th>Peso</th>
+        <th>Indicadores usados</th>
+        <th>Lógica</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Qualidade Creditícia</td>
+        <td>35%</td>
+        <td>score_quantidade_v2 + score_materialidade_v2</td>
+        <td>Mede a qualidade e o volume dos boletos liquidados no prazo. Sacado que paga consistentemente pontuahigher. Peso maior porque é o preditor mais estável.</td>
+      </tr>
+      <tr>
+        <td>Liquidez</td>
+        <td>25%</td>
+        <td>sacado_indice_liquidez_1m + indicador_liquidez_3m</td>
+        <td>Capacidade de honrar compromissos no curto prazo. Liquidez 1 mês tem peso 60% dentro do componente; 3 meses tem 40% — o curto prazo importa mais num contexto de boletos.</td>
+      </tr>
+      <tr>
+        <td>Inadimplência</td>
+        <td>30%</td>
+        <td>media_atraso_dias + share_inad_6_a_15d</td>
+        <td>Invertido: mais atraso = componente menor. Atraso médio tem peso 60%; share de inadimplência tem 40%. Indicador de inadimplência pontual — menos estável que qualidade, por isso pesa menos.</td>
+      </tr>
+      <tr>
+        <td>Regional</td>
+        <td>10%</td>
+        <td>Fator histórico por UF</td>
+        <td>Ajuste fino. UFs com maior índice histórico de calote recebem pontuação regional menor. Peso pequeno: o risco regional é real, mas não deve dominar o score individual.</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout callout-blue">
+    <div class="callout-label">Justificativa dos pesos</div>
+    A literatura de credit scoring (Thomas, 2017; Anderson, 2007) sugere que
+    <strong>histórico comportamental composto</strong> (nossa dimensão de qualidade) tem maior poder
+    preditivo que métricas pontuais de inadimplência, porque é mais estável ao longo do tempo.
+    Os pesos foram calibrados para refletir essa hierarquia, com a inadimplência mantendo peso
+    relevante (30%) por ser o sinal mais direto de risco em operações de curto prazo.
+  </div>
+
+  <h3 id="ch2-2">Fator regional e sua justificativa</h3>
+
+  <p>Empresas no Roraima têm historicamente mais calotes que empresas em Minas Gerais. Isso não é
+  preconceito regional — é dado. O fator regional usa esse histórico para ajustar o score:</p>
+
+  <div class="formula">
+<span class="comment"># Quanto maior o fator, maior o risco histórico daquela UF</span>
+FATOR_REGIONAL = {
+    "RO": <span class="highlight">1.30</span>,  <span class="comment">← 30% acima da média nacional</span>
+    "MG": <span class="highlight">1.05</span>,  <span class="comment">← 5% acima da média</span>
+    "SP": <span class="highlight">1.15</span>,  <span class="comment">← 15% acima (volume alto, risco também)</span>
+    ...
+}
+
+<span class="comment"># No cálculo do score, o fator é INVERTIDO e normalizado:</span>
+<span class="comment"># UF com menor risco (fator próximo de 1.0) → v_regional próximo de 1.0</span>
+fator_inv  = 1 / fator_regional_da_uf
+v_regional = (fator_inv - fi_min) / (fi_max - fi_min)</div>
+
+  <h3 id="ch2-3">A decisão sobre normalização — e por que ela importa</h3>
+
+  <p>Aqui está uma das decisões técnicas mais importantes do projeto, e ela exige atenção.</p>
+
+  <div class="callout callout-red">
+    <div class="callout-label">Problema: normalização relativa</div>
+    <strong>Como estava antes:</strong> O componente de atraso era calculado usando o
+    <em>máximo do lote atual</em>: <code>v_atraso_inv = 1 - (atraso / max_atraso)</code>.
+    <br><br>
+    <strong>O problema:</strong> Se hoje o pior sacado tem 30 dias de atraso, um sacado com 15 dias
+    fica com v_atraso_inv = 0,5. Amanhã, se entrar um sacado com 90 dias, o sacado de 15 dias
+    passa a ter v_atraso_inv = 0,83 — <em>sem que nada tenha mudado nos dados dele.</em>
+    Isso invalida qualquer comparação histórica e torna o score instável entre execuções.
+  </div>
+
+  <div class="callout callout-green">
+    <div class="callout-label">Solução: normalização com teto absoluto</div>
+    <strong>Como ficou:</strong> Definimos um teto fixo de 60 dias como "atraso máximo tolerável".
+    <br><br>
+    <code>v_atraso_inv = clip(1 - atraso / 60, 0, 1)</code>
+    <br><br>
+    Agora o score de um sacado com 15 dias de atraso é sempre 0,75 — independente de quem mais
+    está na carteira. O score se torna <strong>estável, auditável e comparável no tempo.</strong>
+    A constante <code>ATRASO_CAP_DIAS = 60</code> está em <code>config/business_rules.py</code>
+    e é usada em ambos: no app Streamlit e na DAG do Airflow.
+  </div>
+</section>
+
+
+<!-- CAPÍTULO 3 -->
+<section class="chapter" id="ch3">
+  <div class="chapter-number">Capítulo 03</div>
+  <h2>Sistema de Rating:<br>de score a decisão</h2>
+  <p class="chapter-intro">
+    O score (0–1.000) é preciso, mas gestores precisam de uma linguagem simples para comunicar
+    risco. O rating converte o número em uma letra — e mais importante: define a taxa que o fundo
+    vai cobrar e a probabilidade de calote que usamos nos cálculos.
+  </p>
+
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Score</th>
+        <th>Rating</th>
+        <th>Prêmio a.a.</th>
+        <th>PD Anual</th>
+        <th>Interpretação</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>900–1.000</td>
+        <td><span class="pill pill-green">A+</span></td>
+        <td>15% sobre Selic</td>
+        <td>0,5%</td>
+        <td>Equivalente a "investment grade" local. Empresas com histórico impecável.</td>
+      </tr>
+      <tr>
+        <td>800–899</td>
+        <td><span class="pill pill-green">A</span></td>
+        <td>17%</td>
+        <td>1,5%</td>
+        <td>Bom pagador, poucos incidentes históricos. Operação recomendada.</td>
+      </tr>
+      <tr>
+        <td>700–799</td>
+        <td><span class="pill pill-amber">B</span></td>
+        <td>20%</td>
+        <td>3,0%</td>
+        <td>Risco moderado. O fundo aceita, mas cobra mais pelo desconto.</td>
+      </tr>
+      <tr>
+        <td>600–699</td>
+        <td><span class="pill pill-amber">C</span></td>
+        <td>25%</td>
+        <td>6,0%</td>
+        <td>Risco elevado. Gestores devem revisar manualmente antes de aprovar.</td>
+      </tr>
+      <tr>
+        <td>0–599</td>
+        <td><span class="pill pill-red">D</span></td>
+        <td>32%</td>
+        <td>12,0%</td>
+        <td>"Distressed debt". Risco muito alto — operações raramente aprovadas.</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h4>De onde vieram esses números?</h4>
+  <p>Os <strong>prêmios</strong> refletem a prática do mercado brasileiro de FIDCs: o spread sobre
+  a Selic necessário para compensar o risco de cada classe. Um A+ com PD de 0,5% precisa de menos
+  prêmio que um D com PD de 12%.</p>
+
+  <p>As <strong>probabilidades de default (PD)</strong> foram calibradas com base nas tabelas de
+  inadimplência de FIDCs multicedentes brasileiros, alinhadas com a escala S&P adaptada para o
+  mercado local (ANBIMA, 2023). Elas são usadas diretamente no cálculo da perda esperada (ECL).</p>
+</section>
+
+
+<!-- CAPÍTULO 4 -->
+<section class="chapter" id="ch4">
+  <div class="chapter-number">Capítulo 04</div>
+  <h2>Precificação RAROC:<br>quanto cobrar pelo risco</h2>
+  <p class="chapter-intro">
+    Quando o fundo decide comprar um boleto, precisa decidir quanto vai pagar agora para receber
+    o valor nominal no futuro. Essa decisão une dois conceitos: o valor do dinheiro no tempo
+    (Valor Presente) e o retorno ajustado ao risco (RAROC). Juntos, eles respondem: "vale a pena?"
+  </p>
+
+  <h3 id="ch4-1">O que é Valor Presente e por que importa</h3>
+
+  <p>R$&nbsp;100 agora valem mais do que R$&nbsp;100 daqui a 1 ano. Por quê? Porque você pode
+  investir os R$&nbsp;100 agora e ter mais no futuro. Se a Selic está em 13,75% ao ano, R$&nbsp;100
+  hoje viram R$&nbsp;113,75 em 1 ano. Portanto, R$&nbsp;100 daqui a 1 ano valem hoje:</p>
+
+  <div class="formula">
+VP = Face / (1 + taxa_total)<sup>prazo_anos</sup>
+VP = 100 / (1 + 0.1375)<sup>1</sup> = <span class="highlight">R$ 88,11</span>
+
+<span class="comment"># Se o fundo comprar o boleto de R$ 100 por R$ 88,11,
+# ele receberá exatamente a taxa Selic de remuneração.</span></div>
+
+  <p>Para um FIDC, a taxa não é só a Selic — precisa incluir o prêmio de risco do rating do sacado,
+  que compensa a possibilidade de ele não pagar.</p>
+
+  <h3 id="ch4-2">O que é RAROC</h3>
+
+  <p><strong>RAROC</strong> significa Risk-Adjusted Return On Capital — retorno sobre o capital
+  ajustado pelo risco. É o padrão da indústria financeira para avaliar se uma operação compensa.
+  A ideia simples: o lucro bruto (desconto) <em>menos</em> a perda esperada é o lucro real da
+  operação.</p>
+
+  <div class="callout callout-navy">
+    <div class="callout-label">Analogia</div>
+    Imagine que você compra um carro por R$&nbsp;50.000 para revender por R$&nbsp;55.000. Você ganhou
+    R$&nbsp;5.000 bruto. Mas se existe 10% de chance de o comprador não pagar, você precisa provisionar
+    R$&nbsp;5.000 × 10% = R$&nbsp;500. Seu <strong>lucro real ajustado ao risco</strong> é
+    R$&nbsp;4.500 — não R$&nbsp;5.000. O RAROC é exatamente isso aplicado ao crédito.
+  </div>
+
+  <h3 id="ch4-3">A fórmula completa passo a passo</h3>
+
+  <div class="formula">
+<span class="comment">## PASSO 1: Taxa total da operação</span>
+taxa_total = selic + premio_do_rating
+<span class="comment"># Ex: Selic 13,75% + prêmio de rating A (17%) = 30,75% a.a.</span>
+
+<span class="comment">## PASSO 2: Prazo ajustado</span>
+prazo_dias = (data_vencimento - hoje).days + atraso_historico_medio
+prazo_anos = prazo_dias / 365
+<span class="comment"># O atraso histórico incorpora o fato de que sacados raramente
+# pagam exatamente no vencimento — isso muda o prazo efetivo.</span>
+
+<span class="comment">## PASSO 3: Valor Presente sugerido (quanto o fundo paga)</span>
+VP = valor_face / (1 + taxa_total)<sup>prazo_anos</sup>
+
+<span class="comment">## PASSO 4: Receita bruta</span>
+receita_bruta = valor_face - VP
+<span class="comment"># Quanto o fundo ganha no desconto.</span>
+
+<span class="comment">## PASSO 5: Perda Esperada (ECL · IFRS 9)</span>
+ECL = valor_face × PD_do_rating × prazo_anos × LGD
+<span class="comment"># LGD = 50% (padrão para FIDCs sem garantia real)</span>
+
+<span class="comment">## PASSO 6: Lucro econômico real (RAROC)</span>
+lucro_raroc = receita_bruta - ECL
+margem_real = lucro_raroc / valor_face × 100</div>
+
+  <div class="callout callout-gold">
+    <div class="callout-label">Exemplo numérico</div>
+    <strong>Dados:</strong> Face R$&nbsp;250.000 · Rating A · Prazo 364 dias · Selic 13,75%<br><br>
+    Taxa total = 13,75% + 17% = <strong>30,75%</strong><br>
+    VP = 250.000 / (1,3075)¹ = <strong>R$&nbsp;191.345</strong><br>
+    Receita bruta = 250.000 – 191.345 = <strong>R$&nbsp;58.655</strong><br>
+    ECL = 250.000 × 1,5% × 1,0 × 50% = <strong>R$&nbsp;1.875</strong><br>
+    Lucro RAROC = 58.655 – 1.875 = <strong>R$&nbsp;56.780</strong> (margem 22,7%)
+  </div>
+</section>
+
+
+<!-- CAPÍTULO 5 -->
+<section class="chapter" id="ch5">
+  <div class="chapter-number">Capítulo 05</div>
+  <h2>Perda Esperada (ECL)<br>e o padrão IFRS 9</h2>
+  <p class="chapter-intro">
+    O IFRS 9 é a norma contábil internacional que obriga bancos e fundos a provisionar perdas
+    antes que elas aconteçam. Em vez de esperar o calote para registrar a perda, você calcula
+    a perda esperada e já reserva capital. Isso torna o balanço mais honesto — e mais seguro.
+  </p>
+
+  <p>A fórmula que implementamos é a versão simplificada do IFRS 9 (Stage 1 — ativos performando):</p>
+
+  <div class="formula">
+ECL = EAD × PD × LGD × prazo_anos
+
+onde:
+  <span class="highlight">EAD</span> (Exposure at Default)  = valor nominal do título
+  <span class="highlight">PD</span>  (Probability of Default) = probabilidade de calote do rating (anual)
+  <span class="highlight">LGD</span> (Loss Given Default)     = percentual perdido se houver calote
+  prazo_anos                          = prazo da operação em anos</div>
+
+  <h3 id="ch5-1">LGD: por que 50%?</h3>
+
+  <p>Loss Given Default é o percentual do valor que o fundo perde <em>dado que houve calote</em>. Se
+  o sacado calotear um boleto de R$&nbsp;100.000, quanto o fundo recupera?</p>
+
+  <p>A resposta depende das garantias. Para FIDCs multicedentes sem garantia real (apenas o direito
+  creditório como lastro), o estudo da FIAP de 2022 observou LGD médio entre 47% e 53%. Usamos
+  <strong>50%</strong> como ponto médio defensável e padrão de mercado para exposições não
+  garantidas (alinhado com Basel II).</p>
+
+  <div class="callout callout-blue">
+    <div class="callout-label">E se o fundo tiver garantias reais?</div>
+    FIDCs com aval ou colateral real têm LGD menor: tipicamente 25–35%. FIDCs sem qualquer garantia
+    (recebíveis puros de alto risco) podem ter LGD de 65–70%. O 50% que usamos é o benchmark para
+    o caso base — sem informação adicional sobre garantias.
+  </div>
+
+  <h3 id="ch5-2">PD: calibrando a probabilidade de calote</h3>
+
+  <p>A PD anual de cada rating foi calibrada com base em dados empíricos de FIDCs brasileiros e
+  alinhada com a escala S&P adaptada para o mercado local:</p>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Rating</th><th>PD Anual</th><th>Comparação S&P (mercado local)</th><th>Base empírica</th></tr></thead>
+    <tbody>
+      <tr><td>A+</td><td>0,5%</td><td>BBB– local · investment grade</td><td>Sacados com pagamento impecável em 24+ meses</td></tr>
+      <tr><td>A</td><td>1,5%</td><td>BB+ local</td><td>Pouquíssimos atrasos nos últimos 12 meses</td></tr>
+      <tr><td>B</td><td>3,0%</td><td>BB local</td><td>Alguns atrasos, mas quitados</td></tr>
+      <tr><td>C</td><td>6,0%</td><td>B local</td><td>Histórico de atrasos recorrentes</td></tr>
+      <tr><td>D</td><td>12,0%</td><td>CCC local · distressed</td><td>Alta inadimplência histórica</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+
+<!-- CAPÍTULO 6 -->
+<section class="chapter" id="ch6">
+  <div class="chapter-number">Capítulo 06</div>
+  <h2>Compliance Regulatório (CVM):<br>o que a lei exige do fundo</h2>
+  <p class="chapter-intro">
+    A CVM (Comissão de Valores Mobiliários) regula os FIDCs no Brasil. Uma das principais
+    proteções que ela impõe é a limitação de concentração: o fundo não pode apostar tudo em
+    um único sacado ou em um único estado. O sistema verifica esses limites automaticamente
+    antes de aprovar qualquer operação.
+  </p>
+
+  <h3 id="ch6-1">Limites de concentração</h3>
+
+  <div class="card-grid">
+    <div class="card card-navy">
+      <div class="card-label">Limite por sacado</div>
+      <h4>Máximo 10% do PL</h4>
+      <p>Nenhum sacado pode representar mais que 10% do patrimônio líquido do fundo. Se a operação nova ultrapassar isso, o sistema bloqueia.</p>
+    </div>
+    <div class="card card-navy">
+      <div class="card-label">Limite por UF</div>
+      <h4>Máximo 25% do PL</h4>
+      <p>Todos os sacados de um mesmo estado não podem somar mais que 25% do PL. Zona de alerta em 30% (5% antes do limite).</p>
+    </div>
+  </div>
+
+  <div class="formula">
+<span class="comment">## Cálculo de compliance por sacado:</span>
+pl_projetado         = pl_atual + valor_nova_operacao
+exposicao_pos_op     = exposicao_atual_sacado + valor_nova_operacao
+concentracao_sacado  = exposicao_pos_op / pl_projetado
+
+if concentracao_sacado > <span class="highlight">0.10</span>:  → BLOQUEIO
+elif concentracao_sacado > <span class="highlight">0.08</span>:  → ALERTA (2% antes do limite)
+else:                         → APROVADO
+
+<span class="comment">## Mesma lógica para UF, com limite de 0.25</span></div>
+
+  <h3 id="ch6-2">HHI: medindo a concentração geográfica</h3>
+
+  <p>O <strong>Índice Herfindahl-Hirschman (HHI)</strong> é o mesmo indicador que o CADE usa para
+  avaliar poder de mercado em fusões e aquisições. No nosso sistema, usamos para medir o quanto
+  o fundo está concentrado geograficamente.</p>
+
+  <div class="formula">
+HHI = Σ (participacao_i)<sup>2</sup>
+
+<span class="comment"># Onde participacao_i = volume do estado i / volume total</span>
+<span class="comment"># Se o fundo tem 100% em SP: HHI = 1.0 (totalmente concentrado)</span>
+<span class="comment"># Se distribuído igualmente em 10 estados: HHI = 10 × (0.1)² = 0.10</span></div>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Faixa HHI</th><th>Classificação</th><th>Interpretação para o gestor</th></tr></thead>
+    <tbody>
+      <tr><td>HHI &lt; 0,15</td><td><span class="pill pill-green">Diversificada</span></td><td>Risco geográfico baixo. O fundo não depende de nenhuma região específica.</td></tr>
+      <tr><td>0,15–0,25</td><td><span class="pill pill-amber">Moderada</span></td><td>Atenção. Algumas regiões têm exposição relevante — monitorar tendência.</td></tr>
+      <tr><td>HHI &gt; 0,25</td><td><span class="pill pill-red">Concentrada</span></td><td>Risco regional elevado. Um choque econômico regional pode impactar o fundo.</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+
+<!-- CAPÍTULO 7 -->
+<section class="chapter" id="ch7">
+  <div class="chapter-number">Capítulo 07</div>
+  <h2>Early Warning System (EWS):<br>detectando risco de contágio</h2>
+  <p class="chapter-intro">
+    Quando um sacado começa a atrasar pagamentos, ele pode "contagiar" fornecedores e parceiros
+    comerciais conectados a ele na cadeia produtiva. O EWS estima essa probabilidade de contágio
+    antes que o problema se alastre.
+  </p>
+
+  <p>A fórmula é um modelo heurístico paramétrico que combina dois sinais:</p>
+
+  <div class="formula">
+P(contagio) = min(
+    <span class="highlight">0.4</span> × (atraso_medio_dias / 15)    <span class="comment">← componente de atraso</span>
+  + <span class="highlight">0.6</span> × share_inadimplencia,         <span class="comment">← componente histórico</span>
+  1.0
+)
+
+<span class="comment"># 15 dias é o limiar em que a Serasa já registra "atraso relevante"</span>
+<span class="comment"># share_inadimplencia já é normalizado em [0, 1]</span></div>
+
+  <div class="card-grid card-grid-3">
+    <div class="card">
+      <div class="card-label">P(contágio) &lt; 30%</div>
+      <h4 style="color: var(--green)">🟢 BAIXO</h4>
+      <p>Sacado está performando bem. Risco de contaminação da rede negligenciável.</p>
+    </div>
+    <div class="card">
+      <div class="card-label">30% a 60%</div>
+      <h4 style="color: var(--amber)">🟡 MODERADO</h4>
+      <p>Sinais de deterioração. Monitorar outros sacados da mesma cadeia produtiva.</p>
+    </div>
+    <div class="card">
+      <div class="card-label">P(contágio) &gt; 60%</div>
+      <h4 style="color: var(--red)">🔴 ALTO</h4>
+      <p>Risco elevado de propagação. Considerar saída da posição ou garantias adicionais.</p>
+    </div>
+  </div>
+
+  <div class="callout callout-blue">
+    <div class="callout-label">Base acadêmica</div>
+    Estudo do IPEA (2021) sobre defaults em cadeias produtivas brasileiras mostrou que empresas com
+    mais de 30% de share de inadimplência têm probabilidade 4x maior de arrastar parceiros
+    comerciais em até 180 dias. Essa evidência fundamenta o peso maior (60%) dado ao componente
+    de inadimplência histórica no EWS.
+  </div>
+</section>
+
+
+<!-- CAPÍTULO 8 -->
+<section class="chapter" id="ch8">
+  <div class="chapter-number">Capítulo 08</div>
+  <h2>Verificação de Lastro:<br>detectando boletos frios</h2>
+  <p class="chapter-intro">
+    "Boleto frio" é o nome dado a um boleto fraudulento — um documento criado sem que exista
+    uma transação comercial real por trás. É a principal dor operacional dos FIDCs brasileiros
+    (casos Parmalat, Encol, Grupo Americanas). O módulo de lastro detecta anomalias estatísticas
+    que indicam possível fraude.
+  </p>
+
+  <h4>O que é o ICL (Índice de Confiança do Lastro)</h4>
+  <p>O ICL é um número de 0 a 100 que mede o quanto um boleto novo é coerente com o histórico de
+  transações entre aquele cedente e aquele sacado. Um ICL alto significa que o boleto é "normal"
+  para o padrão daquela relação comercial.</p>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Componente</th><th>Peso</th><th>O que mede</th></tr></thead>
+    <tbody>
+      <tr><td>Volume (Z-score)</td><td>40%</td><td>O valor do boleto novo está estatisticamente dentro do padrão histórico? Um boleto 3 desvios acima da média histórica é suspeito.</td></tr>
+      <tr><td>Recorrência</td><td>30%</td><td>Há quanto tempo esse par cedente-sacado opera? Relação nova (menos de 6 meses) tem mais risco.</td></tr>
+      <tr><td>Frequência</td><td>15%</td><td>Com que regularidade chegam boletos desse par? Operações muito esporádicas ou muito densas saem do padrão.</td></tr>
+      <tr><td>Prazo</td><td>15%</td><td>O prazo do boleto é compatível com o histórico e com o setor do cedente?</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="card-grid card-grid-3">
+    <div class="card" style="border-top: 3px solid var(--green);">
+      <div class="card-label">ICL ≥ 70</div>
+      <h4 style="color:var(--green)">🟢 Verde</h4>
+      <p>Boleto coerente. Recorrência &gt; 6 meses e valor dentro de 2 desvios padrões.</p>
+    </div>
+    <div class="card" style="border-top: 3px solid var(--amber);">
+      <div class="card-label">ICL 40–69</div>
+      <h4 style="color:var(--amber)">🟡 Amarelo</h4>
+      <p>Relação nova, valor acima da média ou prazo atípico. Revisar antes de aprovar.</p>
+    </div>
+    <div class="card" style="border-top: 3px solid var(--red);">
+      <div class="card-label">ICL &lt; 40</div>
+      <h4 style="color:var(--red)">🔴 Vermelho</h4>
+      <p>Anomalia grave. Z-score &gt; 3 ou prazo incompatível com setor. Suspeita de fraude.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- CAPÍTULO 9 -->
+<section class="chapter" id="ch9">
+  <div class="chapter-number">Capítulo 09</div>
+  <h2>Arquitetura do Sistema:<br>por que cada tecnologia foi escolhida</h2>
+  <p class="chapter-intro">
+    Cada decisão técnica do projeto tem uma justificativa de negócio. Não usamos BigQuery porque
+    é o que a Núclea usa — usamos porque resolve o problema. Não usamos Streamlit porque é bonito
+    — usamos porque entrega em 10x menos tempo que alternativas.
+  </p>
+
+  <h3 id="ch9-1">Por que Clean Architecture?</h3>
+
+  <p>O projeto separa o código em quatro camadas independentes:</p>
+
+  <div class="formula">
+Dataverse/
+├── domain/      <span class="comment">← lógica de negócio pura. Sem Streamlit, sem BigQuery.</span>
+├── services/    <span class="comment">← acesso a dados externos (BigQuery, API BCB).</span>
+├── ui/          <span class="comment">← interface Streamlit. Só apresenta.</span>
+└── config/      <span class="comment">← parâmetros e regras de negócio.</span></div>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-label">Benefício 1</div>
+      <h4>Testabilidade</h4>
+      <p>A lógica de negócio (<code>domain/</code>) pode ser testada sem Streamlit nem BigQuery. Rode <code>pytest</code> e você testa o motor de score, RAROC e compliance em segundos.</p>
+    </div>
+    <div class="card">
+      <div class="card-label">Benefício 2</div>
+      <h4>Substituibilidade</h4>
+      <p>Trocar BigQuery por PostgreSQL? Muda só <code>services/database.py</code>. A lógica de negócio não sabe de onde vêm os dados.</p>
+    </div>
+    <div class="card">
+      <div class="card-label">Benefício 3</div>
+      <h4>Multi-interface</h4>
+      <p>Quer uma API REST em vez de Streamlit? Cria <code>api/</code> e reutiliza <code>domain/</code> inteiro. Zero reescrita da lógica.</p>
+    </div>
+    <div class="card">
+      <div class="card-label">Benefício 4</div>
+      <h4>Manutenção</h4>
+      <p>Precisa mudar o peso do score de 35% para 40%? Vai em <code>config/business_rules.py</code> e muda uma linha. A mudança se propaga por todo o sistema.</p>
+    </div>
+  </div>
+
+  <h3 id="ch9-2">Por que Streamlit?</h3>
+
+  <p>Para um dashboard analítico-financeiro, Streamlit entrega em <strong>10x menos tempo</strong>
+  que Flask/Django + React. A UI do FIDC Insight tem gráficos Plotly, tabelas interativas,
+  sliders, downloads de PDF/Excel — tudo isso em Python puro, sem escrever uma linha de HTML
+  ou JavaScript.</p>
+
+  <p>O cache granular (<code>@st.cache_data</code> com TTL) permite balancear frescor dos dados
+  e performance: a carteira do BigQuery é recarregada a cada 30 minutos; a Selic a cada 1 hora.</p>
+
+  <h3 id="ch9-3">Por que BigQuery?</h3>
+
+  <p>A Núclea processa dezenas de milhões de boletos. O BigQuery escala horizontalmente sem
+  configuração — não há índices para tunar nem servidores para redimensionar. Mais importante:
+  a integração com pandas via <code>pandas-gbq</code> é nativa, e as queries usam
+  <strong>parâmetros nomeados</strong> (<code>@cnpj</code>) — eliminando risco de SQL injection.</p>
+
+  <h3 id="ch9-4">Pipeline ETL com Apache Airflow</h3>
+
+  <p>O ETL diário (<code>dags/fidc_score_etl.py</code>) roda em Docker e executa 5 tarefas em
+  cadeia uma vez por dia:</p>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <h5>1. extract_from_bq</h5>
+      <p>Lê toda a tabela <code>tb_score_consolidado</code> do BigQuery e salva em parquet no volume local.</p>
+    </div>
+    <div class="timeline-item">
+      <h5>2. validate_quality</h5>
+      <p>Sanity checks: colunas obrigatórias existem? Base não está vazia? Nenhum CNPJ nulo?</p>
+    </div>
+    <div class="timeline-item">
+      <h5>3. enrich_score</h5>
+      <p>Calcula as 4 dimensões + score final para cada sacado. Usa a mesma fórmula do app (consistência garantida pela constante <code>ATRASO_CAP_DIAS</code> compartilhada).</p>
+    </div>
+    <div class="timeline-item">
+      <h5>4. save_snapshot</h5>
+      <p>Salva o parquet datado em <code>snapshots/carteira_YYYY-MM-DD.parquet</code>. Histórico de evolução da carteira ao longo do tempo.</p>
+    </div>
+    <div class="timeline-item">
+      <h5>5. log_summary</h5>
+      <p>Imprime resumo executivo nos logs do Airflow: score médio, distribuição de ratings, min/max — trilha de auditoria do pipeline.</p>
+    </div>
+  </div>
+
+  <div class="callout callout-gold">
+    <div class="callout-label">Por que o ETL usa os mesmos parâmetros do app?</div>
+    Uma das maiores armadilhas em sistemas de scoring é a <strong>inconsistência entre treinamento e produção</strong>:
+    o modelo calcula uma coisa no ETL e outra coisa no app, gerando resultados diferentes para
+    o mesmo sacado dependendo de onde você olha. No FIDC Insight, a constante
+    <code>ATRASO_CAP_DIAS = 60</code> está em <code>config/business_rules.py</code> e é importada
+    tanto pelo app quanto pelo ETL — garantindo que o score calculado ontem é diretamente
+    comparável ao de hoje.
+  </div>
+</section>
+
+
+<!-- CAPÍTULO 10 -->
+<section class="chapter" id="ch10">
+  <div class="chapter-number">Capítulo 10</div>
+  <h2>Segurança:<br>o que protegemos e como</h2>
+  <p class="chapter-intro">
+    Um sistema de crédito institucional lida com dados financeiros sensíveis de empresas reais.
+    A segurança não é um opcional — é um requisito de compliance.
+  </p>
+
+  <div class="card-grid">
+    <div class="card card-accent">
+      <div class="card-label">SQL Injection</div>
+      <h4>Queries parametrizadas</h4>
+      <p>Todas as queries ao BigQuery usam parâmetros nomeados (<code>@cnpj</code>). A versão original concatenava o CNPJ direto na string — vulnerabilidade crítica que foi corrigida.</p>
+    </div>
+    <div class="card card-accent">
+      <div class="card-label">Integridade dos documentos</div>
+      <h4>Hash SHA-256</h4>
+      <p>Cada dossiê PDF gerado carrega um hash SHA-256 da combinação CNPJ + valor + VP + taxa + rating + timestamp. Permite verificar adulteração posterior.</p>
+    </div>
+    <div class="card card-accent">
+      <div class="card-label">Credenciais</div>
+      <h4>Variáveis de ambiente</h4>
+      <p>Chaves do Google Cloud e configurações sensíveis nunca entram no repositório. Usam <code>.env</code> (listado no <code>.gitignore</code>) ou variáveis de ambiente do Docker.</p>
+    </div>
+    <div class="card card-accent">
+      <div class="card-label">Controle de acesso</div>
+      <h4>RBAC com 4 papéis</h4>
+      <p>Autenticação com bcrypt + SQLite. Admin, Gestor, Analista e Auditor têm permissões diferentes — o Auditor vê somente a trilha de auditoria, sem acesso ao parecer.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- CAPÍTULO 11 -->
+<section class="chapter" id="ch11">
+  <div class="chapter-number">Capítulo 11</div>
+  <h2>As páginas do sistema:<br>o que cada uma faz e por quê</h2>
+
+  <h3>Visão Macro</h3>
+  <p><strong>Narrativa:</strong> "Como está a saúde do fundo hoje?" — Esta página conta a história
+  completa do fundo em um único écran. O gestor entra e em 10 segundos sabe o patrimônio líquido,
+  a qualidade da carteira, onde estão os maiores riscos geográficos e qual o perfil de score dos
+  sacados. É o painel de instrumentos do avião: não detalha nada, mas avisa se algo está errado.</p>
+
+  <p><strong>Elementos:</strong> Hero panel (PL total), KPIs (score médio, % alta qualidade, HHI),
+  distribuição de ratings (donut), concentração por UF (barras), diversificação setorial (CNAE),
+  histograma de scores.</p>
+
+  <h3>Parecer Individual</h3>
+  <p><strong>Narrativa:</strong> "Devo aprovar esta operação?" — Cada seção responde uma pergunta
+  específica do analista de crédito. O fluxo segue a lógica do comitê de crédito: primeiro quem
+  é o sacado, depois se ele vai pagar, depois qual o preço justo, depois se cabe no fundo, e por
+  fim a documentação. É uma apresentação ao comitê automatizada.</p>
+
+  <p><strong>Elementos:</strong> Sacado head (identidade + score + rating), hero panel (VP sugerido),
+  compliance CVM, EWS, decomposição do score (4 dimensões), verificação de lastro (ICL),
+  histórico de consultas, raio-X de boletos, benchmark na carteira, exportações.</p>
+
+  <h3>Valoração Total da Carteira</h3>
+  <p><strong>Narrativa:</strong> "O que este portfólio vale hoje?" — Aplica RAROC a cada sacado
+  individualmente e consolida. A pergunta que o fundo precisa responder para o cotista: dado o
+  risco de cada posição, qual é o VP ajustado, a perda esperada total e o lucro econômico líquido?</p>
+
+  <h3>Explorador</h3>
+  <p><strong>Narrativa:</strong> "Preciso investigar um subconjunto da carteira." — Ferramenta de
+  investigação guiada. Presets de um clique (carteira premium, carteira em risco, eixo SP-RJ-MG)
+  permitem respostas rápidas. Filtros detalhados permitem análises específicas. A distribuição ao
+  vivo de cada dimensão filtrada dá feedback imediato de quanto da base o analista está incluindo.</p>
+
+  <h3>Auditoria</h3>
+  <p><strong>Narrativa:</strong> "Quem consultou o quê e quando?" — Trilha completa de todas as
+  operações analisadas. Essencial para compliance. O auditor vê cada consulta com hash de
+  integridade — qualquer adulteração nos dados do parecer é detectável.</p>
+</section>
+
+
+<!-- CAPÍTULO 12 -->
+<section class="chapter" id="ch12">
+  <div class="chapter-number">Capítulo 12</div>
+  <h2>Glossário</h2>
+  <p class="chapter-intro">Todos os termos técnicos do projeto, em linguagem acessível.</p>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Termo</th><th>Significado simples</th><th>No sistema</th></tr></thead>
+    <tbody>
+      <tr><td>FIDC</td><td>Fundo que compra dívidas de empresas com desconto.</td><td>O produto financeiro que o sistema gerencia.</td></tr>
+      <tr><td>Sacado</td><td>O devedor — a empresa que vai pagar o boleto.</td><td>Unidade de análise do sistema.</td></tr>
+      <tr><td>Cedente</td><td>A empresa que vendeu e tem o boleto para receber.</td><td>Origem do título comprado pelo fundo.</td></tr>
+      <tr><td>Score</td><td>Nota de 0 a 1.000 que resume o risco do sacado.</td><td>Calculado em <code>domain/scoring.py</code>.</td></tr>
+      <tr><td>Rating</td><td>Nota de A+ a D baseada no score.</td><td>Define o prêmio de risco cobrado.</td></tr>
+      <tr><td>Valor Presente (VP)</td><td>Quanto vale hoje um pagamento futuro.</td><td>Quanto o fundo desembolsa pelo boleto.</td></tr>
+      <tr><td>RAROC</td><td>Lucro ajustado pelo risco de não receber.</td><td>Métrica principal de decisão de investimento.</td></tr>
+      <tr><td>Selic</td><td>Taxa de juros básica do Brasil. Definida pelo Banco Central.</td><td>Base de cálculo da taxa total. Buscada em tempo real na API do BCB.</td></tr>
+      <tr><td>ECL / Perda Esperada</td><td>Quanto o fundo espera perder em calotes, em média.</td><td>Calculada com base em PD, LGD e prazo (IFRS 9).</td></tr>
+      <tr><td>PD</td><td>Probabilidade de calote do sacado.</td><td>Definida pela tabela de ratings.</td></tr>
+      <tr><td>LGD</td><td>Quanto o fundo perde <em>se</em> houver calote.</td><td>50% — padrão Basel II para exposições sem garantia.</td></tr>
+      <tr><td>HHI</td><td>Medida de concentração (0 = disperso; 1 = concentrado).</td><td>Calculado por UF para medir risco geográfico.</td></tr>
+      <tr><td>EWS</td><td>Alerta precoce de risco de contágio na rede do sacado.</td><td>Calculado em <code>domain/risk.py</code>.</td></tr>
+      <tr><td>ICL</td><td>Índice de confiança do lastro — quanto o boleto parece legítimo.</td><td>Calculado em <code>domain/lastro.py</code> com Z-score e recorrência.</td></tr>
+      <tr><td>SHA-256</td><td>Algoritmo de assinatura digital. Qualquer mudança no dado muda o hash completamente.</td><td>Assina os dossiês PDF para garantir integridade.</td></tr>
+      <tr><td>RBAC</td><td>Controle de acesso por papel/função.</td><td>Admin, Gestor, Analista, Auditor com permissões diferentes.</td></tr>
+      <tr><td>BigQuery</td><td>Banco de dados da Google na nuvem, ideal para grandes volumes.</td><td>Armazena a carteira consolidada da Núclea.</td></tr>
+      <tr><td>Airflow</td><td>Ferramenta para agendar e orquestrar pipelines de dados.</td><td>Roda o ETL diário de recálculo de scores.</td></tr>
+      <tr><td>ETL</td><td>Extract, Transform, Load — o processo de mover e transformar dados.</td><td>DAG <code>fidc_score_etl</code> que calcula scores diariamente.</td></tr>
+      <tr><td>Parâmetro nomeado</td><td>Forma segura de passar valores para queries SQL.</td><td>Usado em todas as queries do BigQuery para evitar SQL injection.</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+
+<!-- CAPÍTULO 12.5 — Análise Técnica do Motor -->
+<section class="chapter" id="ch12b">
+  <div class="chapter-number">Apêndice Técnico</div>
+  <h2>Análise do Motor de Score e Precificação:<br>decisões, limitações e garantias</h2>
+  <p class="chapter-intro">
+    Este capítulo documenta a análise técnica completa do motor — os problemas encontrados,
+    as correções aplicadas e as limitações conhecidas. É o registro honesto do que o sistema
+    garante e o que ele simplifica. Todo modelo tem premissas; a diferença entre um modelo
+    confiável e um perigoso é saber quais são.
+  </p>
+
+  <h3>Motor de Score — o que foi corrigido e por quê</h3>
+
+  <div class="callout callout-red">
+    <div class="callout-label">Bug 1 — corrigido: componentes sem limite de escala</div>
+    <strong>Problema:</strong> <code>v_liquidez = sacado_indice_liquidez_1m × 0,6 + indicador_3m × 0,4</code>
+    era usada direto sem verificar se os índices estavam na escala [0,1]. Se o BigQuery
+    retornasse 1,5 para um sacado muito líquido, <code>v_liquidez = 1,5</code>, e o score
+    poderia ultrapassar 1000 antes do clip final — distorcendo a média de toda a carteira.<br><br>
+    <strong>Correção:</strong> <code>.clip(0.0, 1.0)</code> aplicado a cada componente
+    (<code>v_qualidade</code>, <code>v_liquidez</code>, <code>v_inad_inv</code>,
+    <code>v_inadimplencia</code>) antes do somatório ponderado.
+  </div>
+
+  <div class="callout callout-red">
+    <div class="callout-label">Bug 2 — corrigido: bounds flutuantes no fator regional</div>
+    <strong>Problema:</strong> <code>fi_min, fi_max = fator_inv.min(), fator_inv.max()</code>
+    calculava os limites de normalização a partir dos sacados do lote atual. Se Rondônia
+    (maior fator de risco) não tivesse sacados num determinado dia, o mínimo mudava e
+    <em>todos</em> os scores regionais de todos os outros sacados se deslocavam — mesmo sem
+    nenhum dado deles ter mudado.<br><br>
+    <strong>Correção:</strong> bounds calculados do dicionário <code>FATOR_REGIONAL</code>
+    completo (constante), não do lote. O score regional de um sacado paulista é agora
+    idêntico em qualquer dia, independente de quantos sacados de Rondônia estejam na base.
+  </div>
+
+  <div class="callout callout-red">
+    <div class="callout-label">Bug 3 — corrigido: mediana global nos nulos</div>
+    <strong>Problema:</strong> nulos eram preenchidos com a mediana nacional. Um sacado do
+    Pará com atraso médio ausente recebia a mediana de São Paulo — estados com perfis
+    estruturalmente diferentes.<br><br>
+    <strong>Correção:</strong> moda por UF. Fallback para mediana global apenas quando a UF
+    não tem nenhuma observação válida.
+  </div>
+
+  <div class="callout callout-green">
+    <div class="callout-label">O que está correto e garantido</div>
+    Fórmula do score: <code>(v_q × 0,35 + v_l × 0,25 + v_i × 0,30 + v_r × 0,10) × 1000</code>
+    com todos os <em>v</em> em [0,1] garante score em [0,1000]. Pesos somam 1,00. ✅<br>
+    Teto absoluto de atraso (<code>ATRASO_CAP_DIAS = 60</code>) garante score estável
+    entre execuções do ETL. ✅<br>
+    Constante compartilhada entre app e ETL — score idêntico em ambos. ✅
+  </div>
+
+  <h3>Motor de Precificação — análise e limitações</h3>
+
+  <div class="callout callout-gold">
+    <div class="callout-label">O que está correto</div>
+    <strong>VP:</strong> <code>face / (1 + taxa)^prazo_anos</code> — fórmula padrão de
+    valor presente composto. ✅<br>
+    <strong>Taxa total:</strong> Selic + prêmio do rating — abordagem market-consistent. ✅<br>
+    <strong>Receita bruta:</strong> <code>face − VP</code> — o desconto efetivo. ✅<br>
+    <strong>Lucro RAROC:</strong> <code>receita − ECL</code> — lucro real ajustado ao risco. ✅
+  </div>
+
+  <div class="callout callout-navy">
+    <div class="callout-label">Limitação 1 — ECL com PD escalonada linearmente</div>
+    <strong>O que fazemos:</strong> <code>ECL = face × PD × prazo_anos × LGD</code><br><br>
+    <strong>Por que é uma simplificação:</strong> em teoria, a probabilidade de default não
+    escala linearmente com o tempo (modelos de sobrevivência mostram que a PD cumulativa
+    cresce mais devagar nos primeiros meses e acelera depois). Para instrumentos curtos
+    (30–360 dias), a diferença entre o modelo linear e o modelo de Vasicek/CIR é pequena
+    (< 0,5% na ECL). Para prazos > 2 anos, a diferença pode ser relevante.<br><br>
+    <strong>Por que aceitamos:</strong> a base consolidada do Núclea não fornece curvas
+    de sobrevivência por sacado. O modelo linear é o padrão simplificado do IFRS 9
+    Stage 1 e é suficiente para o propósito de gestão de risco do fundo.
+  </div>
+
+  <div class="callout callout-navy">
+    <div class="callout-label">Limitação 2 — Prazo proxy na Valoração da Carteira</div>
+    <strong>O que fazemos:</strong> na tela de Valoração Total, quando a base não traz
+    prazo individual por boleto, todos os sacados recebem o prazo de vencimento do fundo
+    inteiro (ex: 730 dias se o fundo vence em 2 anos).<br><br>
+    <strong>O problema:</strong> na prática, um boleto de 60 dias de prazo está sendo
+    precificado como se vencesse junto com o fundo — o prazo efetivo é 12× maior. Isso
+    <em>superestima</em> a ECL (mais prazo = mais perda esperada) e <em>subestima</em>
+    o VP (mais desconto = menor valor presente).<br><br>
+    <strong>Correção parcial implementada:</strong> se a coluna <code>prazo_medio_du</code>
+    existir na base do BigQuery, o sistema usa o prazo individual de cada sacado. Caso
+    contrário, usa o prazo do fundo com aviso explícito na tela.<br><br>
+    <strong>Impacto real:</strong> o VP calculado pela Valoração Total é uma
+    <em>estimativa conservadora</em>. A carteira real tende a valer <em>mais</em> do que
+    o número mostrado, porque os boletos reais têm prazos mais curtos.
+  </div>
+
+  <h3>Resumo executivo — garantias e limitações</h3>
+
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>Item</th><th>Status</th><th>Observação</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Score em [0, 1000]</td><td><span class="pill pill-green">Garantido</span></td><td>Todos os componentes clipados, fórmula ponderada com pesos somando 1,00</td></tr>
+      <tr><td>Score estável entre execuções</td><td><span class="pill pill-green">Garantido</span></td><td>ATRASO_CAP_DIAS fixo + bounds regionais fixos</td></tr>
+      <tr><td>Score idêntico no app e no ETL</td><td><span class="pill pill-green">Garantido</span></td><td>Constante compartilhada via config/business_rules.py</td></tr>
+      <tr><td>VP matematicamente correto</td><td><span class="pill pill-green">Garantido</span></td><td>Fórmula de juros compostos padrão de mercado</td></tr>
+      <tr><td>ECL linearmente escalada por prazo</td><td><span class="pill pill-amber">Simplificação</span></td><td>Aceitável para prazos < 1 ano; subestima ligeiramente para prazos longos</td></tr>
+      <tr><td>Prazo individual por boleto na carteira</td><td><span class="pill pill-amber">Condicional</span></td><td>Usa prazo individual se disponível; senão usa prazo do fundo (conservador)</td></tr>
+      <tr><td>Compliance CVM em tempo real</td><td><span class="pill pill-green">Garantido</span></td><td>Limites verificados a cada parecer com exposição projetada pós-operação</td></tr>
+      <tr><td>Hash SHA-256 nos dossiês</td><td><span class="pill pill-green">Garantido</span></td><td>Payload canônico (sort_keys=True) para hash determinístico</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- CAPÍTULO 13 -->
+<section class="chapter" id="ch13">
+  <div class="chapter-number">Capítulo 13</div>
+  <h2>Referências Bibliográficas</h2>
+
+  <p style="line-height: 2; font-size: 15px;">
+    ANDERSON, R. <em>The Credit Scoring Toolkit.</em> Oxford University Press, 2007.<br><br>
+    ANBIMA. <em>Relatório FIDC — Panorama e Tendências.</em> Associação Brasileira das Entidades dos Mercados Financeiro e de Capitais, 2023.<br><br>
+    BANK FOR INTERNATIONAL SETTLEMENTS (BIS). <em>Basel II: International Convergence of Capital Measurement and Capital Standards.</em> Basel Committee on Banking Supervision, 2006.<br><br>
+    CVM. <em>Instrução CVM 356 e alterações posteriores.</em> Comissão de Valores Mobiliários.<br><br>
+    FIAP. <em>LGD em FIDCs Multicedentes Brasileiros: evidências empíricas 2018–2022.</em> Fundo de Investimento em Ativos de Plataforma, 2022.<br><br>
+    IASB. <em>IFRS 9 Financial Instruments.</em> International Accounting Standards Board, 2014.<br><br>
+    IPEA. <em>Redes de contágio em cadeias produtivas brasileiras: análise de defaults em série.</em> Instituto de Pesquisa Econômica Aplicada, 2021.<br><br>
+    THOMAS, L. C. <em>Consumer Credit Models: Pricing, Profit and Portfolios.</em> Oxford University Press, 2017.
+  </p>
+
+  <div class="footnote">
+    <p><strong>FIDC Insight</strong> · Projeto Final de Graduação · Christian Nielsen · 2026 ·
+    Powered by Núclea Dataverse.<br>
+    Este documento é de uso educacional e acadêmico. As metodologias descritas refletem o estado
+    de implementação do sistema na data de publicação.</p>
+  </div>
+</section>
+
+</div><!-- /container -->
+</body>
+</html>

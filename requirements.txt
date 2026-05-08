@@ -1,0 +1,43 @@
+# =============================================================================
+# FIDC Insight — Dependências do projeto
+# =============================================================================
+# Instalação: pip install -r requirements.txt
+# Recomendado usar dentro de um ambiente virtual (venv).
+# =============================================================================
+
+# --- Interface / Dashboard ---
+streamlit>=1.30.0
+plotly>=5.18.0
+
+# --- Manipulação de dados ---
+pandas>=2.0.0
+numpy>=1.24.0
+
+# --- BigQuery ---
+pandas-gbq>=0.19.0
+google-cloud-bigquery>=3.11.0
+google-auth>=2.22.0
+db-dtypes>=1.1.0
+
+# --- APIs externas ---
+requests>=2.31.0
+
+# --- Exports ---
+fpdf2>=2.7.0
+openpyxl>=3.1.0
+
+# --- Autenticação / Auditoria ---
+bcrypt>=4.1.0
+
+# --- Testes unitários (domain layer) ---
+pytest>=7.4.0
+
+# =============================================================================
+# Airflow · DAG de ETL FIDC (fidc_score_etl)
+# =============================================================================
+# Provider Google — habilita BigQueryHook e GoogleCloudBaseOperator
+apache-airflow-providers-google
+# Parquet — usado para persistir staging e snapshots entre tasks
+pyarrow>=14.0.0
+# (opcional) Carrega Service Account de arquivo .env em dev local
+# python-dotenv

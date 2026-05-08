@@ -1,0 +1,43 @@
+{
+  "data_consulta": "2026-03-25 18:37:38",
+  "cnpj": {
+    "id_hash": "c137becbf8aeb57d1cb29eafa0506837ae986c18e10ba4ea5c0b83a88f2f3926",
+    "uf": "PE",
+    "cnae": "4645101"
+  },
+  "score": {
+    "score_fidc": 821.29,
+    "classificacao_risco": "A",
+    "taxa_premio_risco": 0.17
+  },
+  "componentes": {
+    "qualidade_crediticia_pct": 98.4,
+    "liquidez_pct": 63.69,
+    "inadimplencia_hist_pct": 77.37,
+    "risco_regional_pct": 85.56
+  },
+  "boletos": {
+    "total_boletos": 1,
+    "boletos_pagos": 1,
+    "boletos_inadimplentes": 0,
+    "vlr_nominal_total": 1288.58,
+    "vlr_nominal_medio": 1288.58,
+    "media_atraso_real_dias": 0.0,
+    "atraso_max_real_dias": 0.0,
+    "taxa_liquidacao": 1.0,
+    "taxa_inadimplencia": 0.0,
+    "ultimo_boleto": "2024-05-13"
+  },
+  "precificacao": {
+    "valor_informado": 250000.0,
+    "dt_vencimento": "2027-03-24",
+    "prazo_base_dias": 364,
+    "atraso_medio_historico": 0.0,
+    "prazo_ajustado_dias": 364.0,
+    "prazo_ajustado_anos": 0.9973,
+    "selic_referencia": 0.1375,
+    "taxa_total_anual": 0.3075,
+    "vp_sugerido": 191345.09,
+    "margem_seguranca_pct": 23.46
+  }
+}

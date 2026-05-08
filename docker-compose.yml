@@ -1,0 +1,78 @@
+# =============================================================================
+# 1. BLOCO DE CONFIGURAÇÃO COMUM
+# =============================================================================
+x-airflow-common: &airflow-common
+  build: .
+  # A linha 'image' foi removida para que o Docker nomeie os containers automaticamente e não dê erro!
+  environment: &airflow-common-env
+    AIRFLOW__CORE__EXECUTOR: LocalExecutor
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+    AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+    AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+    # Credenciais GCP — Service Account JSON montado em ./credentials
+    GOOGLE_APPLICATION_CREDENTIALS: /opt/airflow/credentials/gcp-sa.json
+  volumes:
+    - ./dags:/opt/airflow/dags
+    - ./logs:/opt/airflow/logs
+    - ./plugins:/opt/airflow/plugins
+    # Volume de dados (snapshots parquet gerados pela DAG)
+    - ./data:/opt/airflow/data
+    # Credenciais GCP em read-only (Service Account JSON)
+    - ./credentials:/opt/airflow/credentials:ro
+  depends_on:
+    postgres:
+      condition: service_healthy
+
+# =============================================================================
+# 2. DECLARAÇÃO DOS SERVIÇOS
+# =============================================================================
+services:
+
+  postgres:
+    image: postgres:13-alpine
+    ports:
+      - "5433:5432"  # <-- CORREÇÃO: Porta alterada aqui para evitar conflito com o seu Mac!
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "airflow"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  airflow-init:
+    <<: *airflow-common
+    command: version
+    environment:
+      <<: *airflow-common-env
+      _AIRFLOW_DB_UPGRADE: 'true'
+      _AIRFLOW_WWW_USER_CREATE: 'true'
+      _AIRFLOW_WWW_USER_USERNAME: airflow
+      _AIRFLOW_WWW_USER_PASSWORD: airflow
+
+  airflow-webserver:
+    <<: *airflow-common
+    command: webserver
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    depends_on:
+      postgres:
+        condition: service_healthy
+      airflow-init:
+        condition: service_completed_successfully
+
+  airflow-scheduler:
+    <<: *airflow-common
+    command: scheduler
+    depends_on:
+      postgres:
+        condition: service_healthy
+      airflow-init:
+        condition: service_completed_successfully

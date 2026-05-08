@@ -1,0 +1,23 @@
+# ============================================================================
+# FIDC Insight · Streamlit config
+# Alinhado com o tema Executive Dashboard v3 (ui/styles.py + config/theme.py)
+# ============================================================================
+
+[theme]
+base              = "light"
+primaryColor      = "#2563EB"   # ACCENT — ação primária (botões, chips, sliders)
+backgroundColor   = "#F5F7FA"   # BG_APP — fundo da área principal
+secondaryBackgroundColor = "#FFFFFF"  # BG_CARD — fundo de cards e inputs
+textColor         = "#0F172A"   # INK — texto primário
+font              = "sans serif"
+
+[server]
+headless             = true
+enableXsrfProtection = true
+
+[browser]
+gatherUsageStats = false
+
+[client]
+showErrorDetails = true
+toolbarMode      = "minimal"

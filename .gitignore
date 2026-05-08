@@ -1,0 +1,17 @@
+.streamlit/secrets.toml
+.env
+*.pyc
+__pycache__/
+venv/
+.venv/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+logs/
+data/snapshots/
+exports/*.pdf
+exports/*.xlsx
+exports/*.csv
+auth.db
+data/auth.db
