@@ -286,7 +286,7 @@ def render(
             "label":   "Margem Real Ponderada",
             "value":   f"{margem:.2f}%",
             "sub":     "retorno ajustado ao risco sobre face",
-            "variant": "pos" if margem >= 10 else "cau" if margem >= 5 else "neg",
+            "variant": "pos" if margem >= 3.0 else "cau" if margem >= 2.0 else "neg",
         },
     ])
 
