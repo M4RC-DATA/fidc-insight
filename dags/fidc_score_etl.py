@@ -162,9 +162,10 @@ def enrich_score(**ctx) -> None:
 
     df = pd.read_parquet(TMP_DIR / "raw.parquet").copy()
 
-    # Coerção numérica com imputação por moda da UF.
-    # Moda por UF preserva padrões regionais: imputar pela mediana global
-    # distorce o score de sacados em estados com comportamentos atípicos.
+    # Coerção numérica com imputação agrupada por UF.
+    # Variáveis contínuas usam mediana da UF — estatisticamente mais estável
+    # que moda para valores numéricos. Agrupar por UF preserva padrões regionais:
+    # imputar pela mediana global distorce sacados de estados atípicos.
     # Fallback: mediana global para UFs sem observações válidas.
     cols_num = [
         "sacado_indice_liquidez_1m", "score_quantidade_v2",
