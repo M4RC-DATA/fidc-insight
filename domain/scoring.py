@@ -17,12 +17,21 @@ class Classificacao:
 
     Attributes:
         rating: Nota de crédito (A+, A, B, C, D).
-        premio_anual: Spread de risco cobrado sobre a Selic (ex: 0.15 = 15% a.a.).
+        premio_anual: Spread de risco cobrado sobre a Selic (ex: 0.020 = 2,0% a.a.).
         pd_anual: Probabilidade de Default anual (ex: 0.005 = 0.5%).
     """
     rating: str
     premio_anual: float
     pd_anual: float
+
+
+# Fallback defensivo: score inválido → pior rating da tabela (D)
+# Buscado dinamicamente para sempre refletir o business_rules.py vigente.
+_FALLBACK_CLASSIFICACAO = Classificacao(
+    rating="D",
+    premio_anual=CLASSIFICACOES[-1][3],   # último rating = D
+    pd_anual=CLASSIFICACOES[-1][4],
+)
 
 
 def classificar_score(score: float) -> Classificacao:
@@ -40,7 +49,7 @@ def classificar_score(score: float) -> Classificacao:
             return Classificacao(rating=rating, premio_anual=premio, pd_anual=pd_rate)
 
     # Fallback defensivo: score inválido → tratar como pior rating
-    return Classificacao(rating="D", premio_anual=0.32, pd_anual=0.120)
+    return _FALLBACK_CLASSIFICACAO
 
 
 def distribuir_componentes(

@@ -22,7 +22,7 @@ class TestPrecificarOperacaoAritmetica:
     """Verifica que cada componente da precificação bate com a fórmula."""
 
     def test_operacao_rating_a_plus_30_dias(self):
-        """Operação padrão de 30 dias, rating A+ (Selic 13.75% + 15%)."""
+        """Operação padrão de 30 dias — parâmetros explícitos para testar a fórmula."""
         r = precificar_operacao(
             valor_face=100_000,
             data_vencimento=date(2026, 2, 1),
@@ -53,7 +53,7 @@ class TestPrecificarOperacaoAritmetica:
         assert r.lucro_raroc == pytest.approx(r.desconto_bruto - r.perda_esperada)
 
     def test_operacao_rating_d_60_dias(self):
-        """Rating D (PD alta) reduz o lucro RAROC via maior ECL."""
+        """Testa fórmula com parâmetros de alto risco (valores explícitos, não business_rules)."""
         r = precificar_operacao(
             valor_face=100_000,
             data_vencimento=date(2026, 3, 3),
@@ -66,7 +66,7 @@ class TestPrecificarOperacaoAritmetica:
 
         # ECL cresce proporcionalmente à PD — rating D deve ter ECL muito maior
         assert r.perda_esperada > 900  # 100k × 0.12 × (60/365) × 0.5 ≈ 986
-        assert r.taxa_total == pytest.approx(0.4575)
+        assert r.taxa_total == pytest.approx(0.1375 + 0.32)  # Selic + premio_anual explícito
 
     def test_prazo_zero_ou_negativo_vira_um_dia(self):
         """Proteção: vencimento hoje ou passado → prazo mínimo de 1 dia."""

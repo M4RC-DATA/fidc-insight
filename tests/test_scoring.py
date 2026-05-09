@@ -29,21 +29,21 @@ class TestClassificarScore:
         """Score no topo da escala = rating A+ (melhor cliente)."""
         r = classificar_score(990)
         assert r.rating == "A+"
-        assert r.premio_anual == pytest.approx(0.15)
+        assert r.premio_anual == pytest.approx(0.020)
         assert r.pd_anual == pytest.approx(0.005)
 
     def test_score_850_retorna_rating_a(self):
         """Score na faixa 800-899 = rating A."""
         r = classificar_score(850)
         assert r.rating == "A"
-        assert r.premio_anual == pytest.approx(0.17)
+        assert r.premio_anual == pytest.approx(0.035)
         assert r.pd_anual == pytest.approx(0.015)
 
     def test_score_750_retorna_rating_b(self):
         """Score na faixa 700-799 = rating B (ponto médio da carteira)."""
         r = classificar_score(750)
         assert r.rating == "B"
-        assert r.premio_anual == pytest.approx(0.20)
+        assert r.premio_anual == pytest.approx(0.060)
 
     def test_score_650_retorna_rating_c(self):
         """Score na faixa 600-699 = rating C."""
@@ -55,7 +55,7 @@ class TestClassificarScore:
         """Score baixo = rating D (maior spread e PD)."""
         r = classificar_score(400)
         assert r.rating == "D"
-        assert r.premio_anual == pytest.approx(0.32)
+        assert r.premio_anual == pytest.approx(0.180)
         assert r.pd_anual == pytest.approx(0.120)
 
     def test_fronteiras_inclusivas(self):

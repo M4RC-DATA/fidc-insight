@@ -27,6 +27,10 @@ from config.business_rules import (
     ATRASO_CAP_DIAS,
     FATOR_REGIONAL,
     FATOR_REGIONAL_DEFAULT,
+    INAD_PESO_ATRASO,
+    INAD_PESO_SHARE,
+    LIQ_PESO_1M,
+    LIQ_PESO_3M,
     PESOS,
 )
 from config.settings import (
@@ -218,8 +222,8 @@ def _enriquecer_com_score(df: pd.DataFrame) -> pd.DataFrame:
     # estar em escala 0-1. Se a tabela do BQ trouxer valores > 1 (sacados
     # muito líquidos), o clip garante que não inflam o score além do limite.
     df["v_liquidez"] = (
-        df["sacado_indice_liquidez_1m"] * 0.6
-        + df["indicador_liquidez_quantitativo_3m"] * 0.4
+        df["sacado_indice_liquidez_1m"] * LIQ_PESO_1M
+        + df["indicador_liquidez_quantitativo_3m"] * LIQ_PESO_3M
     ).clip(0.0, 1.0)
 
     # ── Componente 3 · Inadimplência (invertida) ────────────────────────
@@ -227,7 +231,9 @@ def _enriquecer_com_score(df: pd.DataFrame) -> pd.DataFrame:
     df["v_atraso_inv"] = (1 - df["media_atraso_dias"] / ATRASO_CAP_DIAS).clip(0.0, 1.0)
     # share_vl_inad deve ser 0-1; clip defensivo contra erros de dado
     df["v_inad_inv"] = (1 - df["share_vl_inad_pag_bol_6_a_15d"]).clip(0.0, 1.0)
-    df["v_inadimplencia"] = (df["v_atraso_inv"] * 0.6 + df["v_inad_inv"] * 0.4).clip(0.0, 1.0)
+    df["v_inadimplencia"] = (
+        df["v_atraso_inv"] * INAD_PESO_ATRASO + df["v_inad_inv"] * INAD_PESO_SHARE
+    ).clip(0.0, 1.0)
 
     # ── Componente 4 · Regional ─────────────────────────────────────────
     # Bounds FIXOS derivados do dicionário FATOR_REGIONAL completo — não do

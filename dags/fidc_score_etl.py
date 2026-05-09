@@ -65,6 +65,10 @@ try:
         ATRASO_CAP_DIAS,
         FATOR_REGIONAL,
         FATOR_REGIONAL_DEFAULT,
+        INAD_PESO_ATRASO,
+        INAD_PESO_SHARE,
+        LIQ_PESO_1M,
+        LIQ_PESO_3M,
         PESOS,
     )
 except ImportError:
@@ -87,6 +91,10 @@ except ImportError:
     }
     FATOR_REGIONAL_DEFAULT = 1.10
     ATRASO_CAP_DIAS = 247.0
+    INAD_PESO_ATRASO = 0.60
+    INAD_PESO_SHARE  = 0.40
+    LIQ_PESO_1M = 0.60
+    LIQ_PESO_3M = 0.40
 
 BQ_PROJECT_ID = "dataversenuclea"
 BQ_DATASET = "fidc_dataset"
@@ -164,17 +172,19 @@ def enrich_score(**ctx) -> None:
         "indicador_liquidez_quantitativo_3m",
         "share_vl_inad_pag_bol_6_a_15d",
     ]
+    # Colunas contínuas → mediana por UF (preserva padrão regional e é
+    # estatisticamente mais estável que moda para variáveis contínuas).
+    # Fallback: mediana global para UFs sem observações suficientes.
     for col in cols_num:
         if col not in df.columns:
             continue
         df[col] = pd.to_numeric(df[col], errors="coerce")
         if "uf" in df.columns and df[col].isna().any():
-            moda_uf = (
-                df.groupby("uf")[col]
-                .transform(lambda s: s.mode().iloc[0] if s.notna().any() else float("nan"))
+            mediana_uf = df.groupby("uf")[col].transform(
+                lambda s: s.median() if s.notna().any() else float("nan")
             )
             mediana_global = df[col].median()
-            df[col] = df[col].fillna(moda_uf).fillna(mediana_global)
+            df[col] = df[col].fillna(mediana_uf).fillna(mediana_global)
         else:
             df[col] = df[col].fillna(df[col].median())
 
@@ -188,16 +198,24 @@ def enrich_score(**ctx) -> None:
     # ── Componente 2 · Liquidez
     # Clip defensivo: se o índice vier > 1 do BQ, não infla o score.
     df["v_liquidez"] = (
-        df["sacado_indice_liquidez_1m"] * 0.6
-        + df["indicador_liquidez_quantitativo_3m"] * 0.4
+        df["sacado_indice_liquidez_1m"] * LIQ_PESO_1M
+        + df["indicador_liquidez_quantitativo_3m"] * LIQ_PESO_3M
     ).clip(0.0, 1.0)
+    # Alerta: se a maioria dos valores estiver saturada em 1.0, verificar
+    # se os índices vieram fora da escala esperada [0, 1] do BigQuery
+    pct_saturado = (df["v_liquidez"] >= 0.999).mean()
+    if pct_saturado > 0.5:
+        print(f"[ALERTA] v_liquidez saturado em {pct_saturado:.0%} dos sacados — "
+              f"verificar escala dos índices no BigQuery")
 
     # ── Componente 3 · Inadimplência (invertida)
     # Normalização com teto fixo: 0 dias → 1.0; ≥ ATRASO_CAP_DIAS → 0.0
     # Uso de teto absoluto garante estabilidade cross-run do score.
     df["v_atraso_inv"] = (1 - df["media_atraso_dias"] / ATRASO_CAP_DIAS).clip(0.0, 1.0)
     df["v_inad_inv"] = (1 - df["share_vl_inad_pag_bol_6_a_15d"]).clip(0.0, 1.0)
-    df["v_inadimplencia"] = (df["v_atraso_inv"] * 0.6 + df["v_inad_inv"] * 0.4).clip(0.0, 1.0)
+    df["v_inadimplencia"] = (
+        df["v_atraso_inv"] * INAD_PESO_ATRASO + df["v_inad_inv"] * INAD_PESO_SHARE
+    ).clip(0.0, 1.0)
 
     # ── Componente 4 · Fator regional (bounds FIXOS do dicionário completo)
     # Sem bounds fixos, se uma UF extrema não tiver sacados num dia os scores
@@ -277,12 +295,19 @@ def log_summary(**ctx) -> None:
         print(f"    {r:<3} {n:>6,} sacados  ({pct:5.1f}%)")
     print("=" * 70)
 
+    # Validação de distribuição — score médio fora de [250, 850] indica
+    # possível problema no cálculo (dados fora de escala, imputação falha, etc.)
+    score_medio = df["score_calculado"].mean()
+    if not (250 <= score_medio <= 850):
+        print(f"[ALERTA] Score médio ({score_medio:.1f}) fora do intervalo esperado "
+              f"[250, 850] — revisar pipeline de enriquecimento.")
+
 
 # ============================================================================
 # Definição da DAG
 # ============================================================================
 default_args = {
-    "owner": "christian",
+    "owner": "dataverse",
     "retries": 1,
     "retry_delay": timedelta(minutes=5),
     "email_on_failure": False,

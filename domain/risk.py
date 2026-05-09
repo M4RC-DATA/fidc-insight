@@ -84,30 +84,36 @@ def avaliar_concentracao_uf(
     uf: str,
     valor_novo: float,
 ) -> ResultadoConcentracao:
-    """Verifica o limite de concentração estadual."""
+    """Verifica o limite de concentração estadual.
+
+    Zonas:
+        aprovado : percentual ≤ LIMITE - ZONA_ALERTA   (margem confortável)
+        alerta   : LIMITE - ZONA_ALERTA < percentual ≤ LIMITE  (aproximando)
+        bloqueio : percentual > LIMITE  (limite excedido)
+    """
     exposicao_uf = df_carteira[df_carteira["uf"] == uf]["vlr_nominal_total"].sum()
     pl_projetado = df_carteira["vlr_nominal_total"].sum() + valor_novo
     percentual = ((exposicao_uf + valor_novo) / pl_projetado) if pl_projetado > 0 else 0
 
-    if percentual <= LIMITE_POR_UF:
+    if percentual > LIMITE_POR_UF:
         return ResultadoConcentracao(
-            status="aprovado",
+            status="bloqueio",
             percentual_atual=percentual,
             limite=LIMITE_POR_UF,
-            mensagem=f"Aprovado: {uf} em {percentual*100:.1f}% (limite {LIMITE_POR_UF*100:.0f}%)",
+            mensagem=f"BLOQUEIO: Limite estadual de {uf} excedido — {percentual*100:.1f}%",
         )
-    if percentual <= LIMITE_POR_UF + ZONA_ALERTA_UF:
+    if percentual > LIMITE_POR_UF - ZONA_ALERTA_UF:
         return ResultadoConcentracao(
             status="alerta",
             percentual_atual=percentual,
             limite=LIMITE_POR_UF,
-            mensagem=f"Atenção: {uf} próxima ao limite — {percentual*100:.1f}%",
+            mensagem=f"Atenção: {uf} próxima ao limite — {percentual*100:.1f}% (limite {LIMITE_POR_UF*100:.0f}%)",
         )
     return ResultadoConcentracao(
-        status="bloqueio",
+        status="aprovado",
         percentual_atual=percentual,
         limite=LIMITE_POR_UF,
-        mensagem=f"BLOQUEIO: Limite estadual de {uf} excedido — {percentual*100:.1f}%",
+        mensagem=f"Aprovado: {uf} em {percentual*100:.1f}% (limite {LIMITE_POR_UF*100:.0f}%)",
     )
 
 

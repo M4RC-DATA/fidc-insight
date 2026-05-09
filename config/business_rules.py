@@ -47,11 +47,16 @@ FATOR_REGIONAL_DEFAULT: float = 1.10
 #   - PD_anual: Probabilidade de Default em 12 meses
 # =============================================================================
 CLASSIFICACOES: List[Tuple[int, int, str, float, float]] = [
-    (900, 1000, "A+", 0.15, 0.005),
-    (800,  899, "A",  0.17, 0.015),
-    (700,  799, "B",  0.20, 0.030),
-    (600,  699, "C",  0.25, 0.060),
-    (  0,  599, "D",  0.32, 0.120),
+    # (score_min, score_max, rating, prêmio_anual, PD_anual)
+    # prêmio_anual = spread sobre a Selic (ex: 0.020 = 2,0% a.a.)
+    # taxa_total   = Selic + prêmio_anual (calculada em pricing.py)
+    # Calibração: taxas totais resultantes com Selic a 10,75%:
+    #   A+ → ~12,75%  A → ~14,25%  B → ~16,75%  C → ~21,75%  D → ~28,75%
+    (900, 1000, "A+", 0.020, 0.005),
+    (800,  899, "A",  0.035, 0.015),
+    (700,  799, "B",  0.060, 0.030),
+    (600,  699, "C",  0.110, 0.060),
+    (  0,  599, "D",  0.180, 0.120),
 ]
 
 # Ordem canônica de ratings (melhor → pior)
@@ -80,6 +85,19 @@ ZONA_ALERTA_UF: float = 0.05      # Margem de alerta antes do limite
 LGD_PADRAO: float = 0.50  # Loss Given Default: 50% (benchmark FIDCs brasileiros)
 
 # =============================================================================
+# Pesos internos dos sub-componentes (única fonte da verdade — usada no
+# ETL Airflow e no scoring.py para garantir consistência entre os dois)
+# =============================================================================
+
+# Componente de inadimplência: atraso médio e share de inadimplência recente
+INAD_PESO_ATRASO: float = 0.60   # v_atraso_inv (atraso médio histórico)
+INAD_PESO_SHARE:  float = 0.40   # v_inad_inv  (share inadimplência 6-15d)
+
+# Componente de liquidez: índice 1m e índice 3m
+LIQ_PESO_1M: float = 0.60   # sacado_indice_liquidez_1m
+LIQ_PESO_3M: float = 0.40   # indicador_liquidez_quantitativo_3m
+
+# =============================================================================
 # Parâmetros de normalização do componente de atraso no score
 # =============================================================================
 # Teto absoluto de atraso para a normalização do componente v_atraso_inv.
@@ -104,7 +122,15 @@ PRAZO_DIVISOR_ANOS: float = 365.0
 # =============================================================================
 EWS_PESO_ATRASO: float = 0.4
 EWS_PESO_INADIMPLENCIA: float = 0.6
-EWS_DIVISOR_ATRASO_DIAS: float = 15.0  # Normaliza atraso para escala 0-1
+EWS_DIVISOR_ATRASO_DIAS: float = 180.0
+# Calibrado na distribuição real da base Núclea (4.612 sacados):
+#   mediana = 178 dias, p90 = 247 dias.
+# Com divisor = 15 (anterior), qualquer sacado com atraso > 37 dias
+# saturava o componente, tornando o EWS inútil como discriminador.
+# Com divisor = 180 (≈ mediana), a discriminação por nível fica:
+#   sacado bom  (30d,  1% inad) → P ≈ 0.07 → BAIXO
+#   sacado típico (178d, 5% inad) → P ≈ 0.43 → MODERADO
+#   sacado ruim (247d, 30% inad) → P ≈ 0.73 → ALTO
 
 EWS_LIMITE_BAIXO: float = 0.3
 EWS_LIMITE_MODERADO: float = 0.6
