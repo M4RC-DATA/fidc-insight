@@ -103,7 +103,7 @@ class TestConcentracaoUF:
         assert r.percentual_atual > 0.25
 
     def test_uf_na_zona_de_alerta(self):
-        """Entre 25% e 30% = alerta (zona tampão de 5 p.p.)."""
+        """Entre 20% e 25% = alerta (zona tampão de 5 p.p. antes do limite de 25%)."""
         # Carteira com SP em ~27%
         df = pd.DataFrame({
             "id_cnpj": ["A", "B", "C", "D"],
@@ -126,18 +126,21 @@ class TestProbabilidadeContagio:
         assert p == 0.0
 
     def test_sacado_muito_atrasado_e_muita_inadimplencia_satura_em_1(self):
-        """Probabilidade é limitada em 1.0 (min() final)."""
+        """Probabilidade é limitada em 1.0 (min() final).
+        Com divisor=180, valores extremos saturam: atraso=360d + inad=100%.
+        """
         p = calcular_probabilidade_contagio(
-            media_atraso_dias=60, share_inadimplencia=0.9,
+            media_atraso_dias=360, share_inadimplencia=1.0,
         )
         assert p == 1.0
 
     def test_proporcao_com_pesos_40_60(self):
-        """Fórmula: P = (atraso/15) × 0.4 + inadimplência × 0.6."""
-        # atraso=15 (=1.0 normalizado) × 0.4 = 0.4
-        # inadimplência=0 × 0.6 = 0
-        # Total = 0.4
-        p = calcular_probabilidade_contagio(15, 0)
+        """Fórmula: P = (atraso/180) × 0.4 + inadimplência × 0.6.
+        Divisor calibrado na mediana real da base (178 dias ≈ 180).
+        """
+        from config.business_rules import EWS_DIVISOR_ATRASO_DIAS
+        # atraso=EWS_DIVISOR (=1.0 normalizado) × 0.4 = 0.4
+        p = calcular_probabilidade_contagio(EWS_DIVISOR_ATRASO_DIAS, 0)
         assert p == pytest.approx(0.4)
 
         # atraso=0 + inadimplência=0.5 × 0.6 = 0.30

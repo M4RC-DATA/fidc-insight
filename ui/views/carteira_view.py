@@ -41,7 +41,7 @@ from utils.formatters import formatar_moeda, formatar_numero, formatar_percentua
 _RATING_PARAMS: dict[str, tuple[float, float]] = {
     clf[2]: (clf[3], clf[4]) for clf in CLASSIFICACOES
 }
-_RATING_FALLBACK = (0.32, 0.120)  # rating D
+_RATING_FALLBACK = (CLASSIFICACOES[-1][3], CLASSIFICACOES[-1][4])  # rating D — dinâmico
 
 
 def _params(rating: str) -> tuple[float, float]:
@@ -52,7 +52,10 @@ def _params(rating: str) -> tuple[float, float]:
 # Veredicto narrativo
 # ---------------------------------------------------------------------------
 def _veredicto(margem: float, ecl_share: float, hhi: float) -> tuple[str, str, str]:
-    ok = sum([margem >= 15, ecl_share < 5, hhi < 0.15])
+    # Threshold de margem calibrado nos prêmios reais (Selic+spread):
+    # margens esperadas por rating: A+=2.9%, A=3.1%, B=3.4%, C=4.1%, D=4.7%
+    # Uma carteira diversificada bem precificada atinge ~3-4% de margem real
+    ok = sum([margem >= 2.5, ecl_share < 5, hhi < 0.15])
     if ok == 3:
         return (
             "Portfólio bem precificado — retorno adequado ao risco",

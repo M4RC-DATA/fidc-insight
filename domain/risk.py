@@ -127,7 +127,10 @@ def calcular_probabilidade_contagio(
     """Estima a probabilidade de contágio de inadimplência na rede do sacado.
 
     Fórmula (heurística Núclea):
-        P = min( (atraso/15) × 0.4 + inad_share × 0.6 , 1.0 )
+        P = min( (atraso/EWS_DIVISOR_ATRASO_DIAS) × 0.4 + inad_share × 0.6 , 1.0 )
+
+        Divisor calibrado na mediana real da base (178 dias ≈ 180).
+        Com atraso=mediana e inad=5%, P ≈ 0.43 → MODERADO (discriminação adequada).
 
     Valores mais altos indicam que um default desse sacado tem maior
     chance de impactar sacados conectados (relações comerciais recorrentes).

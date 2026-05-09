@@ -26,7 +26,7 @@ _ALIAS_ID    = {"id_cnpj","cnpj","sacado","hash","id_hash","id_pagador","devedor
 _ALIAS_VALOR = {"valor","valor_face","face","vl_face","vlr_face","value","montante","principal"}
 _ALIAS_VENC  = {"vencimento","data_vencimento","dt_venc","maturity","due_date","prazo"}
 _RATING_PAR  = {clf[2]: (clf[3], clf[4]) for clf in CLASSIFICACOES}
-_D_PAR       = (0.32, 0.120)
+_D_PAR       = (CLASSIFICACOES[-1][3], CLASSIFICACOES[-1][4])  # fallback rating D — dinâmico
 
 
 def _detectar(df, aliases):
